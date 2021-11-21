@@ -36,12 +36,12 @@ namespace TechJobsConsole
 
                     if (columnChoice.Equals("all"))
                     {
-                        PrintJobs(JobData.FindAll());
+                         PrintJobs(JobData.FindAll());
                     }
                     else
                     {
                         List<string> results = JobData.FindAll(columnChoice);
-
+                        results.Sort();
                         Console.WriteLine("\n*** All " + columnChoices[columnChoice] + " Values ***");
                         foreach (string item in results)
                         {
@@ -64,11 +64,28 @@ namespace TechJobsConsole
                     if (columnChoice.Equals("all"))
                     {
                         Console.WriteLine("Search all fields not yet implemented.");
+                        searchResults = JobData.FindByValue(searchTerm);
+                        if (searchResults.Count == 0)
+                        {
+                            Console.WriteLine("***** No results found *****");
+                        }
+                        else
+                        {
+                            PrintJobs(searchResults);
+                        }
+
                     }
                     else
                     {
                         searchResults = JobData.FindByColumnAndValue(columnChoice, searchTerm);
-                        PrintJobs(searchResults);
+                        if (searchResults.Count == 0 )
+                        {
+                            Console.WriteLine("***** No results found *****");
+                        }
+                        else
+                        {
+                            PrintJobs(searchResults);
+                        }
                     }
                 }
             }
@@ -118,7 +135,17 @@ namespace TechJobsConsole
 
         private static void PrintJobs(List<Dictionary<string, string>> someJobs)
         {
-            Console.WriteLine("PrintJobs is not implemented yet");
+           // Console.WriteLine("PrintJobs is not implemented yet");
+           
+            foreach (Dictionary<string, string> job in someJobs)                
+            {
+                Console.WriteLine("\n*****");
+                foreach (KeyValuePair<string, string> kvp in job)
+                {
+                    Console.WriteLine(kvp.Key + ": " + kvp.Value);
+                }
+                Console.WriteLine("*****");
+            }
         }
     }
 }
